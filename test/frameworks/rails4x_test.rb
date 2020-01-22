@@ -49,6 +49,7 @@ if defined?(::Rails)
     end
 
     it "should create a span for a collection" do
+      skip if RUBY_VERSION < '2.3' && ENV['DBTYPE'] == 'mysql'
       uri = URI.parse('http://127.0.0.1:8140/widgets')
 
       _ = Net::HTTP.get_response(uri)
