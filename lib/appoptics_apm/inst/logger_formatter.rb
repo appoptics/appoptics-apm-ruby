@@ -17,6 +17,7 @@ module AppOpticsAPM
       else
         def self.included(klass)
           return if klass.to_s == 'AppOpticsAPM::Logging::LogEvent'
+
           AppOpticsAPM::Util.method_alias(klass, :call, klass)
         end
 
