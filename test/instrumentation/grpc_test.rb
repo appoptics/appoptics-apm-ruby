@@ -503,7 +503,7 @@ if defined? GRPC
 
         traces = get_all_traces.delete_if { |tr| tr['Layer'] == 'test'}
         assert_entry_exit(traces, 2)
-        assert valid_edges?(traces)
+        assert valid_edges?(traces, false)
 
         _(traces.size).must_equal 6
         traces.select { |tr| tr['Label'] =~ /entry|exit/ }.each { |tr| _(tr['GRPCMethodType']).must_equal  'SERVER_STREAMING' }
@@ -786,7 +786,7 @@ if defined? GRPC
 
         traces = get_all_traces.delete_if { |tr| tr['Layer'] == 'test'}
         assert_entry_exit(traces, 2)
-        assert valid_edges?(traces)
+        assert valid_edges?(traces, false)
 
         _(traces.size).must_equal 6
         traces.select { |tr| tr['Label'] == 'entry' }.each { |tr| _(tr['GRPCMethodType']).must_equal  'BIDI_STREAMING' }
@@ -929,7 +929,7 @@ if defined? GRPC
 
         traces = get_all_traces.delete_if { |tr| tr['Layer'] == 'test'}
         assert_entry_exit(traces, 2)
-        assert valid_edges?(traces)
+        assert valid_edges?(traces, false)
 
         _(traces.size).must_equal 6
         traces.select { |tr| tr['Label'] =~ /entry|exit/ }.each { |tr| _(tr['GRPCMethodType']).must_equal  'BIDI_STREAMING' }

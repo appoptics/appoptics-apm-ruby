@@ -5,7 +5,15 @@ gem 'eventmachine', '< 1.2.0'
 gem 'em-synchrony'
 # gem 'em-http-request'
 gem 'rest-client'
-gem 'grpc' if RUBY_VERSION < '2.7.0'
+
+if RUBY_VERSION < '2.7.0'
+  if RUBY_VERSION >= '2.3.0'
+    gem 'grpc'
+  else
+    gem 'grpc', '< 1.21.0'
+  end
+end
+
 
 group :development, :test do
   gem 'minitest'
@@ -18,7 +26,15 @@ group :development, :test do
   # gem 'bson' , '~> 4.0'
   gem 'puma' # , '< 3.1.0'
   gem 'webmock'
-  gem 'grpc-tools' if RUBY_VERSION < '2.7.0'
+  if RUBY_VERSION < '2.7.0'
+    if RUBY_VERSION >= '2.3.0'
+      gem 'grpc'
+    else
+      gem 'grpc-tools', '< 1.21.0'
+      gem 'google-protobuf', '< 3.7'
+    end
+  end
+
 end
 
 if defined?(JRUBY_VERSION)
@@ -44,7 +60,12 @@ gem 'patron' # not instrumented, needed to test a non-instrumented faraday adapt
 gem 'redis'
 gem 'resque' unless defined?(JRUBY_VERSION)
 gem 'sequel'
-gem 'sidekiq'
+
+if RUBY_VERSION >= '2.2.2'
+  gem 'sidekiq'
+else
+  gem 'sidekiq', '< 5.0.0'
+end
 gem 'typhoeus'
 
 # Database adapter gems needed by sequel

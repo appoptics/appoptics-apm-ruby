@@ -180,7 +180,7 @@ module AppOpticsAPM
 
         if op
           # check if re-entry but also add op to list for log_exit
-          re_entry = AppOpticsAPM.layer_op&.last == op.to_sym
+          re_entry = AppOpticsAPM.layer_op && AppOpticsAPM.layer_op.last == op.to_sym
           AppOpticsAPM.layer_op = (AppOpticsAPM.layer_op || []) << op.to_sym
           return AppOpticsAPM::Context.toString if re_entry
         end
@@ -233,13 +233,13 @@ module AppOpticsAPM
         return AppOpticsAPM::Context.toString unless AppOpticsAPM.tracing?
 
         if op
-          if AppOpticsAPM.layer_op&.last == op.to_sym
+          if AppOpticsAPM.layer_op && AppOpticsAPM.layer_op.last == op.to_sym
             AppOpticsAPM.layer_op.pop
           else
             AppOpticsAPM.logger.warn "[ruby/logging] op parameter of exit event doesn't correspond to an entry event op"
           end
           # check if the next op is the same, don't log event if so
-          return AppOpticsAPM::Context.toString if AppOpticsAPM.layer_op&.last == op.to_sym
+          return AppOpticsAPM::Context.toString if AppOpticsAPM.layer_op && AppOpticsAPM.layer_op.last == op.to_sym
         end
 
         log_event(layer, :exit, AppOpticsAPM::Context.createEvent, opts)

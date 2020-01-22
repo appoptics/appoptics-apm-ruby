@@ -31,47 +31,49 @@ module AppOpticsAPM
     # - other keys will be reported in the response options as ignored
 
     def initialize(options, signature = nil)
-      @options = options.dup
-      @signature = signature.dup
+      @options = options.dup if options
+      @signature = signature.dup if signature
       @trigger_trace = false
       @custom_kvs = {}
       @pd_keys = nil
       @ignored = []
       @timestamp = 0
 
-      options&.split(/;+/)&.each do |val|
-        k = val.split('=', 2)
+      if options && (options = options.split(/;+/)) && !options.empty?
+        options.each do |val|
+          k = val.split('=', 2)
 
-        next unless k[0] # it can be nil, eg when the header starts with ';'
+          next unless k[0] # it can be nil, eg when the header starts with ';'
 
-        k[0]&.strip!
-        case k[0]
-        when 'trigger-trace'
-          if k[1]
-            @ignored << 'trigger-trace'
+          k[0] && k[0].strip!
+          case k[0]
+          when 'trigger-trace'
+            if k[1]
+              @ignored << 'trigger-trace'
+            else
+              @trigger_trace = true
+            end
+          when 'pd-keys'
+            if @pd_keys
+              AppOpticsAPM.logger.info "[appoptics_apm/x-trace-options] Duplicate key: #{k[0]}"
+            else
+              @pd_keys = k[1].strip
+            end
+          when /^custom-[^\s]*$/
+            if @custom_kvs[k[0]]
+              AppOpticsAPM.logger.info "[appoptics_apm/x-trace-options] Duplicate key: #{k[0]}"
+            else
+              @custom_kvs[k[0]] = k[1].strip
+            end
+          when 'ts'
+            if @timestamp > 0
+              AppOpticsAPM.logger.info "[appoptics_apm/x-trace-options] Duplicate key: #{k[0]}"
+            else
+              @timestamp = k[1].to_i
+            end
           else
-            @trigger_trace = true
+            @ignored << k[0]
           end
-        when 'pd-keys'
-          if @pd_keys
-            AppOpticsAPM.logger.info "[appoptics_apm/x-trace-options] Duplicate key: #{k[0]}"
-          else
-            @pd_keys = k[1].strip
-          end
-        when /^custom-[^\s]*$/
-          if @custom_kvs[k[0]]
-            AppOpticsAPM.logger.info "[appoptics_apm/x-trace-options] Duplicate key: #{k[0]}"
-          else
-            @custom_kvs[k[0]] = k[1].strip
-          end
-        when 'ts'
-          if @timestamp > 0
-            AppOpticsAPM.logger.info "[appoptics_apm/x-trace-options] Duplicate key: #{k[0]}"
-          else
-            @timestamp = k[1].to_i
-          end
-        else
-          @ignored << k[0]
         end
       end
       unless @ignored.empty?

@@ -74,7 +74,7 @@ describe "include traceId in message " do
   end
 
   describe "Formatted msg is NOT a String" do
-    it 'adds a ao.traceId when it is an Exception' do
+    it 'adds an ao.traceId when it is an Exception' do
       AppOpticsAPM::Config[:log_traceId] = :always
 
       _(exc_message).must_match /StandardError/

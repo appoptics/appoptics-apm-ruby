@@ -84,7 +84,7 @@ end
 
 desc 'Fetch extension dependency files'
 task :fetch_ext_deps do
-    swig_version = %x{swig -version} rescue ''
+  swig_version = %x{swig -version} rescue ''
   swig_version = swig_version.scan(/swig version [34].0.\d*/i)
   if swig_version.empty?
       $stderr.puts '== ERROR ================================================================='
@@ -156,7 +156,7 @@ task :compile do
     else
       Dir.chdir(pwd)
       puts '!! Extension failed to build (see above). Have the required binary and header files been fetched?'
-      puts '!! Try the tasks in this order: clean > fetch_ext_deps > compile.'
+      puts '!! Try the tasks in this order: clean > fetch > compile.'
     end
   else
     puts '== Nothing to do under JRuby.'

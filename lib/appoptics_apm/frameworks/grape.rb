@@ -28,7 +28,7 @@ module AppOpticsAPM
 
         report_kvs[:Controller] = options[:for].to_s
         report_kvs[:Action] =
-          if route&.pattern
+          if route && route.pattern
             route.options ? "#{route.options[:method]}#{route.pattern.origin}" : route.pattern.origin
           else
             args.empty? ? env['PATH_INFO'] : args[0]['PATH_INFO']
@@ -54,7 +54,8 @@ module AppOpticsAPM
 
         def error_response_with_appoptics(error = {})
           response = error_response_without_appoptics(error)
-          status, headers, _body = response.finish
+          response = response.finish unless response.is_a?(Array)
+          status, headers, _body = response
 
           xtrace = AppOpticsAPM::Context.toString
 

@@ -175,7 +175,8 @@ describe Sinatra do
 
       _(r.body).must_match /Hello, friend/
 
-      _(test_action).must_match  "SinatraSimple.GET \\/hello\\/([\\w]+)", test_action
+      _(test_action).must_match  "SinatraSimple.GET", test_action
+      _(test_action).must_match  "\\/hello\\/([\\w]+)", test_action
       assert_equal "http://example.org/hello/friend", test_url
       assert_equal 200, test_status
       assert_equal "GET", test_method

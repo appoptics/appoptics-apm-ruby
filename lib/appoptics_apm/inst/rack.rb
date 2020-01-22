@@ -130,7 +130,7 @@ if AppOpticsAPM.loaded
           begin
             report_kvs = collect(env)
             settings.add_kvs(report_kvs)
-            options&.add_kvs(report_kvs, settings)
+            options && options.add_kvs(report_kvs, settings)
 
             AppOpticsAPM::API.log_start(:rack, xtrace, report_kvs, settings)
 

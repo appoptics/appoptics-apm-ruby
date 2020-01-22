@@ -58,6 +58,6 @@ Automatic tracing and metrics for Ruby applications. Get started at appoptics.co
     s.add_development_dependency('benchmark-ips', '>= 2.7.2')
   end
 
-  s.required_ruby_version = '>= 2.4.0'
+  s.required_ruby_version = '>= 2.2.1'
   s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
 end

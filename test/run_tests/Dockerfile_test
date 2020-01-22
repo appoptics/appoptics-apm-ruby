@@ -47,7 +47,7 @@ RUN . ~/.profile \
     && rbenv install 2.4.5 \
     && rbenv install 2.5.5 \
     && rbenv install 2.6.4 \
-    && rbenv install 2.7.0-preview1
+    && rbenv install 2.7.0
 #    && rbenv install jruby-9.1.16.0
 
 # need to revert to using bundler 1.17.3 because some gems require bundler < 2.0
@@ -94,3 +94,5 @@ ENV APPOPTICS_TOKEN_BUCKET_RATE=10000
 
 # replicate stdout of tests to file in local log directory
 ENV TEST_RUNS_TO_FILE=true
+
+CMD /bin/bash

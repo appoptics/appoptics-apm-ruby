@@ -9,7 +9,7 @@
 # Further necessary services like mysql, rabbitmq, and mongo are setup through docker-compose
 ##
 
-dir=`pwd`
+#dir=`pwd`
 cd /code/ruby-appoptics/
 
 rm -f gemfiles/*.lock
@@ -41,9 +41,10 @@ if [ "$1" == "test" ]; then
   echo "Running tests ..."
   cd test/run_tests
   ./run_tests.sh
-else
+#  cd $dir
+  mysql -e 'drop database travis_ci_test;' -h$MYSQL_HOST -p$MYSQL_ROOT_PASSWORD
+elif [ "$1" == "bash" ]; then
   /bin/bash
+#  cd $dir
+  mysql -e 'drop database travis_ci_test;' -h$MYSQL_HOST -p$MYSQL_ROOT_PASSWORD
 fi
-
-cd $dir
-mysql -e 'drop database travis_ci_test;' -h$MYSQL_HOST -p$MYSQL_ROOT_PASSWORD
