@@ -16,7 +16,8 @@ module AppOpticsAPM
         end
       else
         def self.included(klass)
-          AppOpticsAPM::Util.method_alias(klass, :call, ::ActiveSupport::Logger::SimpleFormatter)
+          return if klass.to_s == 'AppOpticsAPM::Logging::LogEvent'
+          AppOpticsAPM::Util.method_alias(klass, :call, klass)
         end
 
         def call_with_appoptics(severity, time, progname, msg)
@@ -57,7 +58,11 @@ end
 if AppOpticsAPM.loaded
   class Logger
     class Formatter
-      prepend AppOpticsAPM::Logger::Formatter
+      if RUBY_VERSION >= '2.3'
+        prepend AppOpticsAPM::Logger::Formatter
+      else
+        include AppOpticsAPM::Logger::Formatter
+      end
     end
   end
 end
