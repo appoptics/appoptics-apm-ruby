@@ -7,11 +7,24 @@ module AppOpticsAPM
   module Logger
     module Formatter
 
-      def call(severity, time, progname, msg)
-        return super if AppOpticsAPM::Config[:log_traceId] == :never
+      if RUBY_VERSION >= '2.3'
+        def call(severity, time, progname, msg)
+          return super if AppOpticsAPM::Config[:log_traceId] == :never
 
-        msg = insert_trace_id(msg)
-        super
+          msg = insert_trace_id(msg)
+          super
+        end
+      else
+        def self.included(klass)
+          AppOpticsAPM::Util.method_alias(klass, :call, ::ActiveSupport::Logger::SimpleFormatter)
+        end
+
+        def call_with_appoptics(severity, time, progname, msg)
+          return call_without_appoptics(severity, time, progname, msg) if AppOpticsAPM::Config[:log_traceId] == :never
+
+          msg = insert_trace_id(msg)
+          call_without_appoptics(severity, time, progname, msg)
+        end
       end
 
       private
