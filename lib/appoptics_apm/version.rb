@@ -8,7 +8,7 @@ module AppOpticsAPM
   module Version
     MAJOR = 4 # breaking,
     MINOR = 11 # feature,
-    PATCH = 0 # fix => BFF
+    PATCH = 1 # fix => BFF
     OLD_RUBY = 1 # this version runs with ruby 2.2.1
 
     STRING = [MAJOR, MINOR, PATCH, OLD_RUBY].compact.join('.')

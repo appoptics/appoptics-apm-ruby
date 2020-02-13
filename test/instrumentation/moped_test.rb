@@ -3,6 +3,9 @@
 
 require 'minitest_helper'
 
+# moped's newest version is from 2015, we only load it with oldgems
+if defined?(::Moped)
+
 unless ENV['APPOPTICS_MONGO_SERVER']
   ENV['APPOPTICS_MONGO_SERVER'] = "127.0.0.1:27017"
 end
@@ -511,3 +514,5 @@ describe "Moped" do
     layer_doesnt_have_key(traces, 'mongo', 'Backtrace')
   end
 end
+end
+

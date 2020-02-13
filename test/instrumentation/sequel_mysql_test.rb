@@ -6,6 +6,7 @@ require 'minitest_helper'
 if defined?(::Sequel) && !defined?(JRUBY_VERSION) && (RUBY_VERSION < '2.4')
 
   AppOpticsAPM::Test.set_mysql_env
+  puts "===== DATABASE_URL: #{ENV['DATABASE_URL']} ====="
   MYSQL_DB = Sequel.connect(ENV['DATABASE_URL'])
 
   unless MYSQL_DB.table_exists?(:items)

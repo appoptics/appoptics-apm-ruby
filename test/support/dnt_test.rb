@@ -134,7 +134,7 @@ class RackDNTTestApp < Minitest::Test
 
     AppOpticsAPM::XTrace.unset_sampled(xtrace)
 
-    assert_equal xtrace, res.headers['X-Trace']
+    assert_equal xtrace, res.header['X-Trace']
     traces = get_all_traces
     assert traces.empty?
 

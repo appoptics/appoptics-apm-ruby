@@ -3,7 +3,7 @@
 
 require_relative 'logger_formatter'
 
-if AppOpticsAPM.loaded && defined?(::Lumberjack::Formatter)
+if AppOpticsAPM.loaded && defined?(Lumberjack::Formatter)
   module Lumberjack
     class Formatter
       if RUBY_VERSION >= '2.3'

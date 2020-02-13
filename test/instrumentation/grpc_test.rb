@@ -13,14 +13,14 @@ if defined? GRPC
   require 'grpc_server_50051'
 
 # uncomment to turn on logging from gRPC
-# module GRPC
-#   def self.logger
-#     LOGGER
-#   end
-#
-#   AppOpticsAPM.logger.level = Logger::DEBUG
-#   LOGGER = AppOpticsAPM.logger
-# end
+module GRPC
+  def self.logger
+    LOGGER
+  end
+
+  AppOpticsAPM.logger.level = Logger::DEBUG
+  LOGGER = AppOpticsAPM.logger
+end
 
   describe 'GRPC' do
 

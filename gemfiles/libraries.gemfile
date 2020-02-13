@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem 'moped'
+# gem 'moped', '>= 2.0.7' # only test this in oldgems, it was last updated in 2015
 gem 'eventmachine', '< 1.2.0'
 gem 'em-synchrony'
 # gem 'em-http-request'
@@ -10,7 +10,7 @@ if RUBY_VERSION < '2.7.0'
   if RUBY_VERSION >= '2.3.0'
     gem 'grpc'
   else
-    gem 'grpc', '< 1.21.0'
+    gem 'grpc', '1.3.4'
   end
 end
 
@@ -28,10 +28,11 @@ group :development, :test do
   gem 'webmock'
   if RUBY_VERSION < '2.7.0'
     if RUBY_VERSION >= '2.3.0'
-      gem 'grpc'
+      gem 'grpc-tools'
+      gem 'google-protobuf'
     else
-      gem 'grpc-tools', '< 1.21.0'
-      gem 'google-protobuf', '< 3.7'
+      gem 'grpc-tools', '1.3.4'
+      gem 'google-protobuf', '3.3' #, '~> 3.7'
     end
   end
 
@@ -44,7 +45,12 @@ else
 end
 
 gem 'bunny'
-gem 'mongo' # , '~> 1.12.5' uncomment to run mongo_v1_test.rb
+if RUBY_VERSION >= '2.3.0'
+  gem 'mongo', '>= 2.11.3'
+else
+  gem 'mongo'
+end
+
 # gem 'cassandra'
 # gem 'curb' unless defined?(JRUBY_VERSION)
 gem 'curb'
