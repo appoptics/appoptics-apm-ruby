@@ -1,26 +1,27 @@
 # Copyright (c) 2018 SolarWinds, LLC.
 # All rights reserved.
 
+require 'minitest_helper'
+
+if defined?(GRPC) && Gem::Version.new(GRPC::VERSION) >= Gem::Version.new('1.6.0')
   require 'minitest/spec'
   require 'minitest/autorun'
   require 'minitest/reporters'
-  require 'minitest_helper'
   require 'minitest/hooks/default'
   require 'mocha/minitest'
 
-if defined? GRPC
   $LOAD_PATH.unshift(File.join(File.dirname(File.dirname(__FILE__)), 'servers/grpc'))
   require 'grpc_server_50051'
 
 # uncomment to turn on logging from gRPC
-module GRPC
-  def self.logger
-    LOGGER
-  end
+  module GRPC
+    def self.logger
+      LOGGER
+    end
 
-  AppOpticsAPM.logger.level = Logger::DEBUG
-  LOGGER = AppOpticsAPM.logger
-end
+    AppOpticsAPM.logger.level = Logger::DEBUG
+    LOGGER = AppOpticsAPM.logger
+  end
 
   describe 'GRPC' do
 
@@ -29,7 +30,6 @@ end
 
       server_bt = AppOpticsAPM::Config[:grpc_server][:collect_backtraces]
       AppOpticsAPM::Config[:grpc_server][:collect_backtraces] = false
-
       @server = GRPC::RpcServer.new(pool_size: @pool_size)
       @server.add_http2_port("0.0.0.0:50051", :this_port_is_insecure)
       @server.handle(AddressService)
@@ -49,6 +49,7 @@ end
       @server.stop
       @server_thread.join
     end
+
     def server_with_backtraces
       server_bt = AppOpticsAPM::Config[:grpc_server][:collect_backtraces]
       AppOpticsAPM::Config[:grpc_server][:collect_backtraces] = true
@@ -107,9 +108,11 @@ end
     describe 'UNARY' do
       it 'should collect traces for unary' do
         AppOpticsAPM::SDK.start_trace(:test) do
-          res = @stub.unary(@address_msg)
+          @stub.unary(@address_msg)
         end
 
+        require 'byebug'
+        byebug
         traces = get_all_traces.delete_if { |tr| tr['Layer'] == 'test'}
 
         _(traces.size).must_equal 4

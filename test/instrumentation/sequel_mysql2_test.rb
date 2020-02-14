@@ -4,7 +4,7 @@
 require 'appoptics_apm/test'
 require 'minitest_helper'
 
-if defined?(::Sequel) && !defined?(JRUBY_VERSION)
+if defined?(::Sequel) && !defined?(JRUBY_VERSION) && (RUBY_VERSION >= '2.4')
 
   AppOpticsAPM::Test.set_mysql2_env
   MYSQL2_DB = Sequel.connect(ENV['DATABASE_URL'])

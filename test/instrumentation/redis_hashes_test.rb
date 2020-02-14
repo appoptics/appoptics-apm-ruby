@@ -3,7 +3,8 @@
 
 require 'minitest_helper'
 
-if defined?(::Redis)
+if defined?(Redis) && Gem::Version.new(Redis::VERSION) >= Gem::Version.new('3.0.0')
+
   describe "Redis Hashes" do
     attr_reader :entry_kvs, :exit_kvs, :redis, :redis_version
 

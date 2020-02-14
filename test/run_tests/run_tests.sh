@@ -13,7 +13,6 @@
 # The options for -r, -g, and -e have to correspond to configurations in the travis.yml file
 ##
 
-RUBY=`rbenv local`
 ## Read opts
 num=-1
 while getopts ":r:g:e:n:" opt; do
@@ -88,5 +87,5 @@ do
   fi
 done
 
-rbenv local $RUBY
+rbenv local 2.5.5
 cd -

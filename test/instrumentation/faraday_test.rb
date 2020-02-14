@@ -210,6 +210,7 @@ describe "Faraday" do
   end
 
   it 'should trace a Faraday with the typhoeus adapter' do
+    skip if RUBY_VERSION < '2_4_0'
     AppOpticsAPM::API.start_trace('faraday_test') do
       conn = Faraday.new(:url => 'http://127.0.0.1:8101') do |faraday|
         faraday.adapter :typhoeus

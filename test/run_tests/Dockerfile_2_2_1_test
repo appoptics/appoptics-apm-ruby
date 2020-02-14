@@ -1,9 +1,4 @@
-FROM ubuntu:16.04
-
-# docker build -f Dockerfile_test -t ruby_appoptics .
-
-# docker-compose run --service-ports ruby_appoptics_apm /code/ruby-appoptics/read_travis_yml.rb [true]
-# use true to start up conatiner and install oboe
+FROM ubuntu:14.04
 
 # install OS packages
 RUN apt-get update \
@@ -19,7 +14,7 @@ RUN apt-get update \
        libreadline-dev \
        libsasl2-dev \
        libssl-dev \
-       openjdk-8-jdk \
+#       openjdk-8-jdk \
        zlib1g-dev \
        libcurl4-gnutls-dev \
        libmysqlclient-dev \
@@ -29,7 +24,9 @@ RUN apt-get update \
        tcl \
        tree \
        psmisc \
+       ruby ruby-dev ruby-bundler git software-properties-common libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm3 libgdbm-dev wget \
     && rm -rf /var/lib/apt/lists/*
+
 
 # rbenv setup
 # use rbenv-default-gems to automatically install bundler for each ruby version
@@ -47,16 +44,17 @@ RUN echo 'alias be="bundle exec"' >> ~/.profile
 # install rubies to build our gem against
 RUN . ~/.profile \
     && cd /root/.rbenv/plugins/ruby-build && git pull && cd - \
-    && rbenv install 2.4.5 \
-    && rbenv install 2.5.5 \
-    && rbenv install 2.6.4 \
-    && rbenv install 2.7.0
+    && rbenv install 2.2.7 \
+#    && rbenv install 2.4.5 \
+    && rbenv install 2.5.5
+#    && rbenv install 2.6.4 \
+#    && rbenv install 2.7.0
 #    && rbenv install jruby-9.1.16.0
 
 # need to revert to using bundler 1.17.3 because some gems require bundler < 2.0
-RUN . ~/.profile && rbenv local 2.4.5 && gem uninstall bundler --quiet -x && gem install bundler -v 1.17.3
+RUN . ~/.profile && rbenv local 2.2.7 && gem uninstall bundler --quiet -x && gem install bundler -v 1.17.3
 RUN . ~/.profile && rbenv local 2.5.5 && gem uninstall bundler --quiet -x && gem install bundler -v 1.17.3
-RUN . ~/.profile && rbenv local 2.6.4 && gem uninstall bundler --quiet -x && gem install bundler -v 1.17.3
+#RUN . ~/.profile && rbenv local 2.6.4 && gem uninstall bundler --quiet -x && gem install bundler -v 1.17.3
 
 RUN echo 'gem: --no-document' >> ~/.gemrc
 
@@ -68,15 +66,16 @@ RUN echo 'gem: --no-document' >> ~/.gemrc
 #    && cd - \
 #    && rm -rf /tmp/swig-4.0.1
 
-RUN git clone https://github.com/swig/swig.git \
+RUN rm -f swig \
+    && git clone https://github.com/swig/swig.git \
     && cd swig \
     && ./autogen.sh \
     && ./configure && make && make install \
     && cd -
 
 # install redis-server version 4++
-RUN curl -SL http://download.redis.io/releases/redis-4.0.0.tar.gz | tar xzC /tmp \
-    && cd /tmp/redis-4.0.0/ \
+RUN curl -SL https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/redis/redis-2.6.14.tar.gz | tar xzC /tmp \
+    && cd /tmp/redis-2.6.14/ \
     && make  && make install && cd -
 
 # install postgres and memcached

@@ -1,7 +1,7 @@
 # Copyright (c) 2016 SolarWinds, LLC.
 # All rights reserved.
 
-unless defined?(JRUBY_VERSION)
+unless defined?(JRUBY_VERSION) || RUBY_VERSION < '2_4_0'
   require 'minitest_helper'
   require 'sidekiq'
 

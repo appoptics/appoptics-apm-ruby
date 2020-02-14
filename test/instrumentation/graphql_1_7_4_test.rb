@@ -422,6 +422,14 @@ describe GraphQL::Tracing::AppOpticsTracing do
   end
 
   describe 'loading' do
+    before do
+      @verbose = $VERBOSE
+      $VERBOSE = nil
+    end
+
+    after do
+      $VERBOSE = @verbose
+    end
     # in these 2 tests we are simulating the fact that the
     # GraphQL::Tracing::AppOpticsTracing class
     # from the graphql gem will be loaded first

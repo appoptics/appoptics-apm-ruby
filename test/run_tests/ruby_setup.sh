@@ -15,10 +15,10 @@ cd /code/ruby-appoptics/
 rm -f gemfiles/*.lock
 rm -f .ruby-version
 
-rbenv global 2.5.5
+rbenv local 2.2.7
 
 echo "Installing gems ..."
-bundle install --quiet
+bundle install #--quiet
 
 bundle exec rake clean fetch compile
 
@@ -46,4 +46,4 @@ else
 fi
 
 cd $dir
-  mysql -e 'drop database travis_ci_test;' -h$MYSQL_HOST -p$MYSQL_ROOT_PASSWORD
+mysql -e 'drop database travis_ci_test;' -h$MYSQL_HOST -p$MYSQL_ROOT_PASSWORD

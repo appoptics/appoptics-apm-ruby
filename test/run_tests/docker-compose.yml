@@ -73,14 +73,14 @@ services:
       - MYSQL_ROOT_PASSWORD=admin
       - MYSQL_HOST=ao-ruby-mysql
       - APPOPTICS_MONGO_SERVER=ao-ruby-mongo
-      - BUNDLE_GEMFILE=gemfiles/libraries.gemfile
+      - BUNDLE_GEMFILE=gemfiles/libraries_api_repo.gemfile
       #       - APPOPTICS_COLLECTOR=collector-stg.appoptics.com
       - APPOPTICS_COLLECTOR=/tmp/appoptics_traces.bson
       - APPOPTICS_GEM_TEST=true
       - APPOPTICS_REPORTER=file
       - APPOPTICS_REPORTER_FILE_SINGLE=false
       - APPOPTICS_FROM_S3=true
-    #       - SIMPLECOV_COVERAGE=True
+#       - SIMPLECOV_COVERAGE=True
     tty: true
 
 
