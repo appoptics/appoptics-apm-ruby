@@ -7,20 +7,21 @@ cache:
 
 env:
   - DBTYPE=postgresql
-  - DBTYPE=mysql2
+#  - DBTYPE=mysql2
 
 rvm:
-  - 2.7.0
-  - 2.6.4
-  - 2.5.5
-  - 2.4.5
-  - ruby-head
+#  - 2.7.0
+#  - 2.6.4
+#  - 2.5.5
+#  - 2.4.5
+  - 2.2.7
+#  - ruby-head
 #  - jruby-9.0.5.0
 
 gemfile:
-  - gemfiles/libraries.gemfile
+  - gemfiles/libraries_api_repo.gemfile
   - gemfiles/unit.gemfile
-  - gemfiles/instrumentation_mocked.gemfile
+#  - gemfiles/instrumentation_mocked.gemfile
   - gemfiles/instrumentation_mocked_oldgems.gemfile
   - gemfiles/frameworks.gemfile
 #  - gemfiles/rails60.gemfile
@@ -51,39 +52,40 @@ matrix:
 #    - rvm: 2.4.5
 #      env: DBTYPE=mysql
 #
-    - gemfile: gemfiles/unit.gemfile
-      env: DBTYPE=mysql
-    - gemfile: gemfiles/noop.gemfile
-      env: DBTYPE=mysql
-    - gemfile: gemfiles/libraries.gemfile
-      env: DBTYPE=mysql
-    - gemfile: gemfiles/instrumentation_mocked.gemfile
-      env: DBTYPE=mysql
-    - gemfile: gemfiles/instrumentation_mocked_oldgems.gemfile
-      env: DBTYPE=mysql
-    - gemfile: gemfiles/frameworks.gemfile
-      env: DBTYPE=mysql
-    - gemfile: gemfiles/rails52.gemfile
-      env: DBTYPE=mysql
-    - gemfile: gemfiles/rails60.gemfile
-      env: DBTYPE=mysql
-    - gemfile: gemfiles/delayed_job.gemfile
-      env: DBTYPE=mysql
 
-    - gemfile: gemfiles/unit.gemfile
-      env: DBTYPE=mysql2
-    - gemfile: gemfiles/noop.gemfile
-      env: DBTYPE=mysql2
-    - gemfile: gemfiles/libraries.gemfile
-      env: DBTYPE=mysql2
-    - gemfile: gemfiles/instrumentation_mocked.gemfile
-      env: DBTYPE=mysql2
-    - gemfile: gemfiles/instrumentation_mocked_oldgems.gemfile
-      env: DBTYPE=mysql2
-    - gemfile: gemfiles/frameworks.gemfile
-      env: DBTYPE=mysql2
-    - gemfile: gemfiles/delayed_job.gemfile
-      env: DBTYPE=mysql2
+#    - gemfile: gemfiles/unit.gemfile
+#      env: DBTYPE=mysql
+#    - gemfile: gemfiles/noop.gemfile
+#      env: DBTYPE=mysql
+#    - gemfile: gemfiles/libraries.gemfile
+#      env: DBTYPE=mysql
+#    - gemfile: gemfiles/instrumentation_mocked.gemfile
+#      env: DBTYPE=mysql
+#    - gemfile: gemfiles/instrumentation_mocked_oldgems.gemfile
+#      env: DBTYPE=mysql
+#    - gemfile: gemfiles/frameworks.gemfile
+#      env: DBTYPE=mysql
+#    - gemfile: gemfiles/rails52.gemfile
+#      env: DBTYPE=mysql
+#    - gemfile: gemfiles/rails60.gemfile
+#      env: DBTYPE=mysql
+#    - gemfile: gemfiles/delayed_job.gemfile
+#      env: DBTYPE=mysql
+#
+#    - gemfile: gemfiles/unit.gemfile
+#      env: DBTYPE=mysql2
+#    - gemfile: gemfiles/noop.gemfile
+#      env: DBTYPE=mysql2
+#    - gemfile: gemfiles/libraries.gemfile
+#      env: DBTYPE=mysql2
+#    - gemfile: gemfiles/instrumentation_mocked.gemfile
+#      env: DBTYPE=mysql2
+#    - gemfile: gemfiles/instrumentation_mocked_oldgems.gemfile
+#      env: DBTYPE=mysql2
+#    - gemfile: gemfiles/frameworks.gemfile
+#      env: DBTYPE=mysql2
+#    - gemfile: gemfiles/delayed_job.gemfile
+#      env: DBTYPE=mysql2
 #  allow_failures:
 #    - rvm: ruby-head
 #    - rvm: 2.7.0
