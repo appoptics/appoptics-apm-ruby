@@ -165,7 +165,7 @@ describe "RailsSharedTests" do
   end
 
   it "should use wrapped class for ActiveJobs" do
-    skip unless defined?(ActiveJob)
+    skip # unless defined?(ActiveJob)
     AppOpticsAPM::API.start_trace('test_trace') do
       ActiveJobWorkerJob.perform_later
     end
