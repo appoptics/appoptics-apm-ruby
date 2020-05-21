@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem 'rails', '~> 5.2.0'
+gem 'rails', '~> 5.1.7'
 gem 'sass-rails'
 gem 'uglifier'
 gem 'coffee-rails'
@@ -30,7 +30,7 @@ group :development, :test do
   gem 'minitest-debugger', :require => false
   gem 'mocha'
   gem 'rack-test'
-  gem 'puma'
+  gem 'puma', '4.3.4'
   gem 'bson'
 end
 
