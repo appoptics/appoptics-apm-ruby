@@ -21,7 +21,7 @@ x-ao-env: &ao-env
   APPOPTICS_TOKEN_BUCKET_CAPACITY: 10000
   APPOPTICS_TOKEN_BUCKET_RATE: 10000
 
-  BUNDLE_GEMFILE: "gemfiles/libraries.gemfile"
+#  BUNDLE_GEMFILE: "gemfiles/libraries.gemfile"
   DOCKER_MYSQL_PASS: "admin"
   DOCKER_PSQL_PASS: "docker"
   MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
