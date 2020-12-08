@@ -26,7 +26,7 @@ describe AppOpticsAPM::SDK do
       end
 
       it 'should call c-lib increment with the correct default args' do
-        Oboe_metal::CustomMetrics.expects(:increment).with('test_name', 1, 0, nil, is_a(AppOpticsAPM::MetricTags), 0)
+        Libappoptics_apm::CustomMetrics.expects(:increment).with('test_name', 1, 0, nil, is_a(AppOpticsAPM::MetricTags), 0)
         AppOpticsAPM::SDK.increment_metric('test_name')
       end
 
@@ -56,7 +56,7 @@ describe AppOpticsAPM::SDK do
       end
 
       it 'should call summary with the correct default args' do
-        Oboe_metal::CustomMetrics.expects(:summary).with('test_name', 7.7, 1, 0, nil, is_a(AppOpticsAPM::MetricTags), 0)
+        Libappoptics_apm::CustomMetrics.expects(:summary).with('test_name', 7.7, 1, 0, nil, is_a(AppOpticsAPM::MetricTags), 0)
         AppOpticsAPM::SDK.summary_metric('test_name', 7.7)
       end
 

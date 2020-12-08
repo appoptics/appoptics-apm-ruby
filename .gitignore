@@ -26,12 +26,12 @@ ext/oboe_metal/oboe_metal.so
 ext/oboe_metal/oboe_noop.so
 ext/oboe_metal/src/bson/*
 ext/oboe_metal/src/oboe.h
-ext/oboe_metal/src/oboe.hpp
+ext/oboe_metal/src/oboe_api.hpp
+ext/oboe_metal/src/oboe_api.cpp
 ext/oboe_metal/src/oboe_debug.h
-ext/oboe_metal/src/oboe_wrap.cxx
+ext/oboe_metal/src/oboe_swig_wrap.cc
 gemfiles/vendor*
-lib/rb_appoptics_apm.so
-lib/oboe_metal.so
+lib/libappoptics_apm.so
 log
 oboe*.gem
 scrap*

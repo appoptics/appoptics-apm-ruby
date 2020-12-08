@@ -111,7 +111,7 @@ if success
     $LIBS << " #{ENV['LIBS']}"
     $LDFLAGS << " #{ENV['LDFLAGS']} '-Wl,-rpath=$$ORIGIN/../ext/oboe_metal/lib'"
 
-    create_makefile('oboe_metal', 'src')
+    create_makefile('libappoptics_apm', 'src')
 
   else
     $stderr.puts   '== ERROR ========================================================='

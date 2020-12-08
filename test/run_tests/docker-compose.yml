@@ -24,13 +24,13 @@ x-ao-env: &ao-env
 
 #  BUNDLE_GEMFILE: "gemfiles/libraries.gemfile"
   DOCKER_MYSQL_PASS: "admin"
-#  DOCKER_PSQL_PASS: "docker"
+  DOCKER_PSQL_PASS: "docker"
   MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
   MYSQL_ROOT_PASSWORD: "admin"
   MYSQL_HOST: "ao-ruby-mysql"
-  OBOE_VERSION: "10.0.0"
+#  OBOE_VERSION: "10.0.0"
   POSTGRES_USER: "docker"
-  PSQL_HOST: "ao_ruby_postgres"
+  PSQL_HOST: "ao-ruby-postgres"
   RUBY_ENV: "test"
   TEST_RUNS_TO_FILE: "true"
 #    - SIMPLECOV_COVERAGE=true
@@ -139,14 +139,17 @@ services:
     container_name: ao-ruby-mongo
     image: mongo:3.4
 
-  ao_ruby_postgres:
-    container_name: ao_ruby_postgres
+  ao-ruby-postgres:
+    container_name: ao-ruby-postgres
     image: postgres:latest
     environment:
       POSTGRES_DB: "travis_ci_test"
       POSTGRES_USER: "docker"
-    volumes:
-      - ./postgres_init.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+      DOCKER_PSQL_PASS: "docker"
+      POSTGRES_PASSWORD: "docker"
+
+#    volumes:
+#      - ./postgres_init.sh:/docker-entrypoint-initdb.d/init-user-db.sh
 
   ao_ruby_wait:
     container_name: ao_ruby_wait
@@ -155,10 +158,10 @@ services:
       - ao-ruby-rabbitmq
       - ao-ruby-mysql
       - ao-ruby-mongo
-      - ao_ruby_postgres
+      - ao-ruby-postgres
     links:
       - ao-ruby-rabbitmq
       - ao-ruby-mysql
       - ao-ruby-mongo
-      - ao_ruby_postgres
+      - ao-ruby-postgres
 

@@ -138,7 +138,7 @@ describe AppOpticsAPM::SDK do
   describe 'start_trace single invocation' do
     it 'should log when sampling' do
       AppOpticsAPM::API.expects(:log_start).with('test_01', nil, {})
-      AppOpticsAPM::API.expects(:log_end).with('test_01', has_entry(:TransactionName => 'custom-test_01'), instance_of(Oboe_metal::Event))
+      AppOpticsAPM::API.expects(:log_end).with('test_01', has_entry(:TransactionName => 'custom-test_01'), instance_of(Libappoptics_apm::Event))
 
       result = AppOpticsAPM::SDK.start_trace('test_01') { 42 }
       assert_equal 42, result
@@ -266,7 +266,7 @@ describe AppOpticsAPM::SDK do
     it 'should call createSpan and log_end in case of an exception' do
       Time.expects(:now).returns(Time.at(0)).twice
       AppOpticsAPM::Span.expects(:createSpan).with('custom-test_01', nil, 0).returns('domain/custom-test_01')
-      AppOpticsAPM::API.expects(:log_end).with('test_01', has_entry(:TransactionName => 'domain/custom-test_01'), instance_of(Oboe_metal::Event))
+      AppOpticsAPM::API.expects(:log_end).with('test_01', has_entry(:TransactionName => 'domain/custom-test_01'), instance_of(Libappoptics_apm::Event))
       begin
         AppOpticsAPM::SDK.start_trace('test_01') do
           raise StandardError
@@ -301,7 +301,7 @@ describe AppOpticsAPM::SDK do
     end
 
     it 'should use the outer layer name' do
-      AppOpticsAPM::API.expects(:log_end).with('test_01', has_entry(:TransactionName => 'custom-test_01'), instance_of(Oboe_metal::Event))
+      AppOpticsAPM::API.expects(:log_end).with('test_01', has_entry(:TransactionName => 'custom-test_01'), instance_of(Libappoptics_apm::Event))
       AppOpticsAPM::SDK.start_trace('test_01') do
         AppOpticsAPM::SDK.start_trace('test_02') { 42 }
       end
@@ -354,7 +354,7 @@ describe AppOpticsAPM::SDK do
     end
 
     it 'should use the outer layer name in case of an exception' do
-      AppOpticsAPM::API.expects(:log_end).with('test_01', has_entry(:TransactionName => 'custom-test_01'), instance_of(Oboe_metal::Event))
+      AppOpticsAPM::API.expects(:log_end).with('test_01', has_entry(:TransactionName => 'custom-test_01'), instance_of(Libappoptics_apm::Event))
       begin
         AppOpticsAPM::SDK.start_trace('test_01') do
           AppOpticsAPM::SDK.start_trace('test_02') do

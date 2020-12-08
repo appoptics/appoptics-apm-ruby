@@ -74,7 +74,7 @@ if defined?(::Redis)
       @redis.setex("talking_heads", 60, "burning down the house")
 
       AppOpticsAPM::API.start_trace('redis_test', '', {}) do
-        @it_exists = @redis.exists("talking_heads")
+        @it_exists = @redis.exists?("talking_heads")
       end
 
       _(@it_exists).must_equal true

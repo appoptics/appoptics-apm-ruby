@@ -1,7 +1,7 @@
 # Copyright (c) 2016 SolarWinds, LLC.
 # All rights reserved.
 
-module Oboe_metal
+module Libappoptics_apm
   include_package 'com.tracelytics.joboe'
   java_import 'com.tracelytics.joboe.LayerUtil'
   java_import 'com.tracelytics.joboe.SettingsReader'
@@ -138,7 +138,7 @@ end
 
 module AppOpticsAPM
   extend AppOpticsAPMBase
-  include Oboe_metal
+  include Libappoptics_apm
 
   class << self
     def sample?(opts = {})

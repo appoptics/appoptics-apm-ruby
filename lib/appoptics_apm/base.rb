@@ -201,7 +201,7 @@ module AppOpticsAPMBase
 
   ##
   # These methods should be implemented by the descendants
-  # (Oboe_metal, JOboe_metal (JRuby), Heroku_metal)
+  # (Libappoptics_apm, JOboe_metal (JRuby), Heroku_metal)
   #
   def sample?(_opts = {})
     fail 'sample? should be implemented by metal layer.'

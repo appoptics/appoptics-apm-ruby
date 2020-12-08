@@ -86,7 +86,7 @@ end
 desc 'Stop all containers that were started for testing and debugging'
 task 'docker_down' do
   Dir.chdir('test/run_tests')
-  exec('docker-compose down')
+  exec('docker-compose down --remove-orphans')
 end
 
 desc 'Run smoke tests'
@@ -116,6 +116,11 @@ task :fetch_ext_deps do
   # VERSION is used by extconf.rb to download the correct liboboe when installing the gem
   remote_file = File.join(oboe_s3_dir, 'VERSION')
   local_file = File.join(ext_src_dir, 'VERSION')
+
+  # remove all oboe* files, they may hang around because of name changes
+  # from oboe* to oboe_api*
+  Dir.glob(File.join(File.expand_path('ext/oboe_metal/'), 'oboe*')).each { |file| FileUtils.rm(file) }
+
   puts "fetching #{remote_file} to #{local_file}"
   open(remote_file, 'rb') do |rf|
     content = rf.read
@@ -125,12 +130,24 @@ task :fetch_ext_deps do
 
   # oboe and bson header files
   FileUtils.mkdir_p(File.join(ext_src_dir, 'bson'))
-    %w(oboe.h oboe.hpp oboe_debug.h oboe.i bson/bson.h bson/platform_hacks.h).each do |filename|
-    # %w(oboe.h oboe_debug.h bson/bson.h bson/platform_hacks.h).each do |filename|
+  files = %w(oboe_debug.h bson/bson.h bson/platform_hacks.h)
+
+  if ENV['OBOE_WIP']
+    wip_src_dir = File.expand_path('../oboe/liboboe')
+    FileUtils.cp(File.join(wip_src_dir, 'oboe_api.cpp'), ext_src_dir)
+    FileUtils.cp(File.join(wip_src_dir, 'oboe_api.hpp'), ext_src_dir)
+    FileUtils.cp(File.join(wip_src_dir, 'oboe.h'), ext_src_dir)
+    FileUtils.cp(File.join(wip_src_dir, 'swig', 'oboe.i'), ext_src_dir)
+  else
+    files += ['oboe.h', 'oboe_api.hpp', 'oboe_api.cpp', 'oboe.i']
+  end
+
+  files.each do |filename|
     remote_file = File.join(oboe_s3_dir, 'include', filename)
     local_file = File.join(ext_src_dir, filename)
 
-    puts "fetching #{remote_file} to #{local_file}"
+    puts "fetching #{remote_file}"
+    puts "      to #{local_file}"
     open(remote_file, 'rb') do |rf|
       content = rf.read
       File.open(local_file, 'wb') { |f| f.puts content }
@@ -138,8 +155,9 @@ task :fetch_ext_deps do
   end
 
   FileUtils.cd(ext_src_dir) do
-    system('swig -c++ -ruby -module oboe_metal oboe.i')
-    FileUtils.rm('oboe.i')
+    # system('swig -c++ -ruby -module oboe_metal -o oboe_swig_wrap.cc oboe.i')
+    system('swig -c++ -ruby -module libappoptics_apm -o oboe_swig_wrap.cc oboe.i')
+    # FileUtils.rm('oboe.i')
   end
 end
 
@@ -152,8 +170,8 @@ task :compile do
 
     pwd      = Dir.pwd
     ext_dir  = File.expand_path('ext/oboe_metal')
-    final_so = File.expand_path('lib/oboe_metal.so')
-    so_file  = File.expand_path('ext/oboe_metal/oboe_metal.so')
+    final_so = File.expand_path('lib/libappoptics_apm.so')
+    so_file  = File.expand_path('ext/oboe_metal/libappoptics_apm.so')
 
     Dir.chdir ext_dir
     # ENV['APPOPTICS_FROM_S3'] = 'true'
@@ -182,8 +200,9 @@ task :clean do
   if !defined?(JRUBY_VERSION)
     pwd     = Dir.pwd
     ext_dir = File.expand_path('ext/oboe_metal')
+    ext_src_dir = File.expand_path('ext/oboe_metal/src')
     symlinks = [
-      File.expand_path('lib/oboe_metal.so'),
+      File.expand_path('lib/libappoptics_apm.so'),
       File.expand_path('ext/oboe_metal/lib/liboboe.so'),
       File.expand_path('ext/oboe_metal/lib/liboboe-1.0.so.0')
     ]
@@ -191,10 +210,13 @@ task :clean do
     symlinks.each do |symlink|
       FileUtils.rm_f symlink
     end
+
+    Dir.chdir ext_src_dir
+    FileUtils.rm_f 'oboe_swig_wrap.cc'
+
     Dir.chdir ext_dir
     sh '/usr/bin/env make clean' if File.exist? 'Makefile'
 
-    FileUtils.rm_f 'src/oboe_wrap.cxx'
     Dir.chdir pwd
   else
     puts '== Nothing to do under JRuby.'

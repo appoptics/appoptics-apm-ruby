@@ -8,7 +8,7 @@ require 'thread'
 # rubocop:disable Style/Documentation, Naming/MethodName
 module AppOpticsAPM
   extend AppOpticsAPMBase
-  include Oboe_metal
+  include Libappoptics_apm
 
   class Reporter
     class << self
@@ -24,7 +24,7 @@ module AppOpticsAPM
         begin
           options = AppOpticsAPM::OboeInitOptions.instance.array_for_oboe # creates an array with the options in the right order
 
-          AppOpticsAPM.reporter = Oboe_metal::Reporter.new(*options)
+          AppOpticsAPM.reporter = Libappoptics_apm::Reporter.new(*options)
 
           # Only report __Init from here if we are not instrumenting a framework.
           # Otherwise, frameworks will handle reporting __Init after full initialization

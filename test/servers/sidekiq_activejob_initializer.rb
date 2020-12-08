@@ -18,6 +18,7 @@ ENV["APPOPTICS_GEM_TEST"] = "true"
 ENV["APPOPTICS_GEM_VERBOSE"] = "true"
 
 Bundler.require(:default, :test)
+# Redis.exists_returns_integer = false # this will be removed in redis >= 5.0
 
 # Configure AppOpticsAPM
 AppOpticsAPM::Config[:tracing_mode] = :enabled
