@@ -48,7 +48,7 @@ jobs:
 
 #-------------------------------------------------------------------------------
   all_linux_test:
-    name: Test on all Linux
+    name: ${{ matrix.os }} - ${{ matrix.ruby }}
     runs-on: ubuntu-latest
     needs: build_images
 
@@ -63,8 +63,6 @@ jobs:
 #      can't use env outside of a command, too bad
 #      image: ghcr.io/appoptics/appoptics-apm-ruby/${{ env.GHRC }}_${{ matrix.os }}
        image: ghcr.io/appoptics/appoptics-apm-ruby/apm_ruby_${{ matrix.os }}
-
-    name: ${{ matrix.os }} - ${{ matrix.ruby }}
 
     services:
       memcached:
