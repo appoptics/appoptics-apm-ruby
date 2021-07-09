@@ -1,4 +1,7 @@
-name: Test on all Linux
+# Copyright (c) 2021 SolarWinds, LLC.
+# All rights reserved.
+
+name: Run tests on different Linux OS
 
 on:
 #  push:
