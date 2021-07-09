@@ -46,12 +46,6 @@ jobs:
           docker build -f ${{ env.DOCKERFILE }}_${{ matrix.os }} -t ${{ env.GHRC }}_${{ matrix.os }} .
           docker push ${{ env.GHRC }}_${{ matrix.os }}
 
-#      - name: Build and publish new Docker image
-#        run: docker build -f ${{ env.DOCKERFILE }}_${{ matrix.os }} -t ${{ env.GHRC }}_${{ matrix.os }} .
-
-#      - name: Publish updated Docker image
-#        run: docker push ${{ env.GHRC }}_${{ matrix.os }}
-
 #-------------------------------------------------------------------------------
   all_linux_test:
     name: Test on all Linux
@@ -66,7 +60,9 @@ jobs:
         ruby: [3.0, 2.7, 2.6, 2.5, 2.4]
 
     container:
-      image: ghcr.io/appoptics/appoptics-apm-ruby/${{ env.GHRC }}_${{ matrix.os }}
+#      can't use env outside of a command, too bad
+#      image: ghcr.io/appoptics/appoptics-apm-ruby/${{ env.GHRC }}_${{ matrix.os }}
+       image: ghcr.io/appoptics/appoptics-apm-ruby/apm_ruby_${{ matrix.os }}
 
     name: ${{ matrix.os }} - ${{ matrix.ruby }}
 
