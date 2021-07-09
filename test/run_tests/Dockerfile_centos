@@ -9,8 +9,8 @@ RUN yum update -y \
 #       automake \
 #       bison \
        bzip2 \
-#       build-essential \
 #       curl \
+       cmake \
        cyrus-sasl-devel \
        cyrus-sasl-plain \
        gdb \
@@ -26,6 +26,7 @@ RUN yum update -y \
 #       libsasl2-dev \
 #       libssl-dev \
 #       openjdk-8-jdk \
+       nodejs \
        openssl-devel \
        pcre \
        pcre-devel \
@@ -37,6 +38,9 @@ RUN yum update -y \
        vim \
        zlib-devel \
     && rm -rf /var/lib/apt/lists/*
+
+# update node to current stable version
+RUN npm cache clean -f && npm install -g n && n stable
 
 # rbenv setup
 # use rbenv-default-gems to automatically install bundler for each ruby version
@@ -78,17 +82,9 @@ RUN curl -SL https://github.com/swig/swig/archive/refs/tags/v4.0.2.tar.gz \
     && cd - \
     && rm -rf /tmp/swig-4.0.2
 
-## waiting for swig 4.0.2 because of changes in Ruby 4.7.0,
-## in the meantime use github version
-#RUN git clone https://github.com/swig/swig.git \
-#    && cd swig \
-#    && ./autogen.sh \
-#    && ./configure && make && make install \
-#    && cd -
-
 # install redis-server version 4++
-RUN curl -SL http://download.redis.io/releases/redis-4.0.0.tar.gz | tar xzC /tmp \
-    && cd /tmp/redis-4.0.0/ \
+RUN curl -SL http://download.redis.io/releases/redis-6.2.4.tar.gz | tar xzC /tmp \
+    && cd /tmp/redis-6.2.4/ \
     && make  && make install && cd -
 
 # install postgres and memcached

@@ -19,6 +19,7 @@ dir=`pwd`
 export BUNDLE_ALLOW_BUNDLER_DEPENDENCY_CONFLICTS=true
 export OBOE_WIP=true
 # RUBY=`rbenv local`
+exit_status=0
 
 ## Read opts
 num=-1
@@ -57,16 +58,18 @@ The values for -r, -g, and -e have to correspond to configurations in the .travi
   esac
 done
 
-cd /code/ruby-appoptics
+# Because of github actions we now have to always run this from the
+# gem root directory
+# cd /code/ruby-appoptics
 
 # version=`rbenv version`
 # set -- $version
 # RUBY=$1
 if [ "$copy" -eq 1 ]; then
-    rm -rf /code/ruby-appoptics_test
-    cp -r /code/ruby-appoptics /code/ruby-appoptics_test
+    rm -rf /tmp/ruby-appoptics_test
+    cp -r . /tmp/ruby-appoptics_test
 
-    cd /code/ruby-appoptics_test/
+    cd /tmp/ruby-appoptics_test/
 fi
 
 ## Read travis configuration
@@ -105,6 +108,14 @@ do
       echo "*** using default bundler with $BUNDLE_GEMFILE ***"
       bundle update # --quiet
     fi
+    # if this is running on alpine and using ruby 3++, we need to patch
+    if [[ -r /etc/alpine-release && $current_ruby =~ ^3.* ]]; then
+      # download and apply patch
+      cd /root/.rbenv/versions/$current_ruby/include/ruby-3.0.0/ruby/internal/
+      curl -sL https://bugs.ruby-lang.org/attachments/download/8821/ruby-ruby_nonempty_memcpy-musl-cxx.patch -o memory.patch
+      patch -N memory.h memory.patch
+      cd -
+    fi
     bundle exec rake clean fetch compile
   else
     echo
@@ -121,6 +132,7 @@ do
 
   if [ "$?" -eq 0 ]; then
     bundle exec rake test
+    [ "$?" -ne 0 ]; exit_status=$?
 
     # kill all sidekiq processes, they don't stop automatically and can add up if tests are run repeatedly
     pids=`ps -ef | grep 'sidekiq' | grep -v grep | awk '{print $2}'`
@@ -135,7 +147,7 @@ do
   if [ "$num" -eq 0 ]; then
     rbenv local 2.5.8
     cd $dir
-    exit
+    exit 0
   fi
 done
 
@@ -144,8 +156,10 @@ echo "--- SUMMARY ------------------------------"
 egrep '===|failures|FAIL|ERROR' $TEST_RUNS_FILE_NAME
 
 if [ "$copy" -eq 1 ]; then
-    mv $TEST_RUNS_FILE_NAME /code/ruby-appoptics/log/
+    mv $TEST_RUNS_FILE_NAME $dir/log/
 fi
 
 rbenv local $RUBY
 cd $dir
+
+exit $exit_status
