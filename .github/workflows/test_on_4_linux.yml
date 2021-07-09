@@ -36,6 +36,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish new Docker image
+        if: ${{ steps.check_files.outputs.renew }}
         run: |
           docker build -f ${{ env.DOCKERFILE }}_${{ matrix.os }} -t ${{ env.GHRC }}_${{ matrix.os }} .
           docker push ${{ env.GHRC }}_${{ matrix.os }}
@@ -100,7 +103,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
 
     - name: just a shell command
       run: |
