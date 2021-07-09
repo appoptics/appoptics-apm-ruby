@@ -103,7 +103,7 @@ jobs:
       uses: actions/checkout@v1
 
     - name: just a shell command
-      run: echo "I am user: " `whoami` ", in directory: " `pwd`
+      run: echo "I am user: `whoami`, in directory: `pwd`"
 
     - name: ruby tests
       run: |
