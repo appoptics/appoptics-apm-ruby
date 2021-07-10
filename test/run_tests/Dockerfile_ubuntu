@@ -60,8 +60,6 @@ RUN apt-get update \
 #   && /bin/rm -r cmake-3.20.5
 
 
-# update node to current stable version
-RUN npm cache clean -f && npm install -g n && n stable
 
 # install yarn
 #RUN curl -o- -L https://yarnpkg.com/install.sh | bash
@@ -82,19 +80,19 @@ RUN echo 'alias be="bundle exec"' >> ~/.profile
 # install rubies to build our gem against
 RUN . ~/.profile \
     && cd /root/.rbenv/plugins/ruby-build && git pull && cd - \
-    && rbenv install 2.4.10 \
-    && rbenv install 2.5.8 \
-    && rbenv install 2.6.7 \
-    && rbenv install 2.7.3 \
+#    && rbenv install 2.4.10 \
+#    && rbenv install 2.5.8 \
+#    && rbenv install 2.6.7 \
+#    && rbenv install 2.7.3 \
     && rbenv install 3.0.1
 #    && rbenv install jruby-9.1.16.0
 
 # need to provide bundler 1.17.3 as well, because some gems require bundler < 2.0
-RUN . ~/.profile && rbenv local 2.4.10 && gem install bundler -v 1.17.3
-RUN . ~/.profile && rbenv local 2.5.8 && gem install bundler -v 1.17.3
-RUN . ~/.profile && rbenv local 2.6.7 && gem install bundler -v 1.17.3
-RUN . ~/.profile && rbenv local 2.7.3 && gem install bundler -v 1.17.3
-RUN . ~/.profile && rbenv local 3.0.1 && gem install bundler -v 1.17.3
+#RUN . ~/.profile && rbenv local 2.4.10 && gem install bundler -v 1.17.3
+#RUN . ~/.profile && rbenv local 2.5.8 && gem install bundler -v 1.17.3
+#RUN . ~/.profile && rbenv local 2.6.7 && gem install bundler -v 1.17.3
+#RUN . ~/.profile && rbenv local 2.7.3 && gem install bundler -v 1.17.3
+#RUN . ~/.profile && rbenv local 3.0.1 && gem install bundler -v 1.17.3
 
 RUN echo 'gem: --no-document' >> ~/.gemrc
 
@@ -115,17 +113,23 @@ RUN curl -SL https://download.redis.io/releases/redis-6.2.4.tar.gz | tar xzC /tm
 # install postgres and memcached
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-       memcached \
-       postgresql \
-       postgresql-contrib \
-    && service postgresql start \
-    && echo "psql --command \"CREATE USER docker WITH SUPERUSER PASSWORD 'docker';\"" >> /tmp/config \
-    && echo "createdb -O docker travis_ci_test" >> /tmp/config \
-    && su postgres -c "bash /tmp/config" \
-    && rm -f /tmp/config
+       memcached
+#       postgresql \
+#       postgresql-contrib \
+#    && service postgresql start \
+#    && echo "psql --command \"CREATE USER docker WITH SUPERUSER PASSWORD 'docker';\"" >> /tmp/config \
+#    && echo "createdb -O docker travis_ci_test" >> /tmp/config \
+#    && su postgres -c "bash /tmp/config" \
+#    && rm -f /tmp/config
 
 RUN apt-get update && \
 	apt-get -y install mysql-client libmysqlclient-dev
+
+
+# update node to current stable version
+# apt install npm doesn't work in the initial apt install ru
+RUN apt install -y --no-install-recommends npm && rm -rf /var/lib/apt/lists/*
+RUN npm cache clean -f && npm install -g n && n stable
 
 ENV PATH="/usr/local/bin:/root/.rbenv/bin:/root/.rbenv/shims:$PATH"
 ENV RUBY_ENV=test
