@@ -32,9 +32,9 @@ RUN apt-get update \
        libsasl2-dev \
        libsqlite3-dev \
        libssl-dev \
-       libssl1.0-dev \
-       nodejs-dev \
-       node-gyp \
+#       libssl1.0-dev \
+#       nodejs-dev \
+#       node-gyp \
        nodejs \
        openjdk-8-jdk \
        pkg-config \
@@ -131,9 +131,9 @@ RUN apt-get update && \
 
 
 # update node to current stable version
-# apt install npm doesn't work in the initial apt install ru
-RUN apt install -y --no-install-recommends npm && rm -rf /var/lib/apt/lists/*
-RUN npm cache clean -f && npm install -g n && n stable
+# apt install npm doesn't work in the initial apt install run
+#RUN apt install -y --no-install-recommends npm && rm -rf /var/lib/apt/lists/*
+#RUN npm cache clean -f && npm install -g n && n stable
 
 ENV PATH="/usr/local/bin:/root/.rbenv/bin:/root/.rbenv/shims:$PATH"
 ENV RUBY_ENV=test
