@@ -24,6 +24,7 @@ RUN apt-get update \
        less \
        libcurl4-gnutls-dev \
 #       libgtest-dev \
+       libmysqld-dev \
        libmysqlclient-dev \
        libpq-dev \
        libpcre3-dev \

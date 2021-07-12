@@ -104,14 +104,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: set the home directory of root
+    - name: print some info
       run: |
         user=`whoami`
         pwd=`pwd`
         echo "I am user: $user, in directory: $pwd, home dir: $HOME"
 
 #    comment out for debug session:
-    - name: Setup tmate session
+    - name: tmate debugging session
       uses: mxschmitt/action-tmate@v3
       with:
         sudo: false

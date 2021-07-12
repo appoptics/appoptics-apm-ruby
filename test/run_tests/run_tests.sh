@@ -17,7 +17,7 @@
 ##
 dir=`pwd`
 export BUNDLE_ALLOW_BUNDLER_DEPENDENCY_CONFLICTS=true
-export OBOE_WIP=true
+
 # RUBY=`rbenv local`
 exit_status=0
 
