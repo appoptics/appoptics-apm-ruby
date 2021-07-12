@@ -104,11 +104,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: just a shell command
+    - name: set the home directry of root
       run: |
+        export HOME=/root
         user=`whoami`
         pwd=`pwd`
-        echo "I am user: $user, in directory: $pwd"
+        echo "I am user: $user, in directory: $pwd, home dir: $HOME"
 
     - name: Setup tmate session
       uses: mxschmitt/action-tmate@v3
