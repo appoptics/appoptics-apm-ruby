@@ -51,7 +51,7 @@ jobs:
 
 #-------------------------------------------------------------------------------
   all_linux_test:
-    name: ${{ matrix.os }} - ${{ matrix.ruby }}
+    name: ${{ matrix.os }} - ruby ${{ matrix.ruby }}
     runs-on: ubuntu-latest
 #    needs: build_images
 
@@ -104,20 +104,21 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: set the home directry of root
+    - name: set the home directory of root
       run: |
-        export HOME=/root
         user=`whoami`
         pwd=`pwd`
         echo "I am user: $user, in directory: $pwd, home dir: $HOME"
 
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
-      with:
-        sudo: false
+#    comment out for debug session:
+#    - name: Setup tmate session
+#      uses: mxschmitt/action-tmate@v3
+#      with:
+#        sudo: false
 
     - name: ruby tests
       run: |
+        export HOME=/root
         test/run_tests/ruby_setup.sh
         version=`rbenv versions | grep ${{ matrix.ruby }}`
         test/run_tests/run_tests.sh -r $version
