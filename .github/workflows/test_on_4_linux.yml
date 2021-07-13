@@ -66,6 +66,27 @@ jobs:
 #      image: ghcr.io/appoptics/appoptics-apm-ruby/${{ env.GHRC }}_${{ matrix.os }}
        image: ghcr.io/appoptics/appoptics-apm-ruby/apm_ruby_${{ matrix.os }}
 
+    env:
+      APPOPTICS_GEM_TEST: true
+      APPOPTICS_REPORTER: file
+      APPOPTICS_COLLECTOR: /tmp/appoptics_traces.bson
+      APPOPTICS_MONGO_SERVER: "mongo"
+      APPOPTICS_RABBITMQ_SERVER: "rabbitmq"
+      APPOPTICS_MEMCACHED_SERVER: "memcached"
+      APPOPTICS_REPORTER_FILE_SINGLE: false
+      APPOPTICS_FROM_S3: true
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_ROOT_PASSWORD: "admin"
+      MYSQL_HOST: "mysql"
+      MYSQL_DATABASE: "travis_ci_test"
+      POSTGRES_DB: "travis_ci_test"
+      DOCKER_MYSQL_PASS: "admin"
+      DOCKER_PSQL_PASS: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_HOST: "postgres"
+      REDIS_PASSWORD: "redis_pass"
+
     services:
       memcached:
         image: memcached:latest
