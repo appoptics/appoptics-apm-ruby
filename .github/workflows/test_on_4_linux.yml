@@ -110,11 +110,12 @@ jobs:
         pwd=`pwd`
         echo "I am user: $user, in directory: $pwd, home dir: $HOME"
 
-#    comment out for debug session:
-    - name: tmate debugging session
-      uses: mxschmitt/action-tmate@v3
-      with:
-        sudo: false
+#    comment out for debug session
+#    only works with ubuntu and debian, because it uses apt:
+#    - name: tmate debugging session
+#      uses: mxschmitt/action-tmate@v3
+#      with:
+#        sudo: false
 
     - name: ruby tests
       run: |
