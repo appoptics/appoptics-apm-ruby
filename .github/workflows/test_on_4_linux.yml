@@ -133,10 +133,10 @@ jobs:
 
 ##    comment out for debug session
 ##    only works with ubuntu and debian, because it uses apt:
-    - name: tmate debugging session
-      uses: mxschmitt/action-tmate@v3
-      with:
-        sudo: false
+#    - name: tmate debugging session
+#      uses: mxschmitt/action-tmate@v3
+#      with:
+#        sudo: false
 
     - name: ruby tests
       run: |
